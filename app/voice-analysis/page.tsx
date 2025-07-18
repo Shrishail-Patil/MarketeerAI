@@ -286,7 +286,7 @@ export default function VoiceAnalysisPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            Your AI voice model is ready! We've analyzed your unique writing style and you're all set to generate
+            Your AI voice model is ready! We&apos;ve analyzed your unique writing style and you&apos;re all set to generate
             authentic tweets.
           </motion.p>
 
@@ -502,7 +502,7 @@ export default function VoiceAnalysisPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center text-sm text-gray-600 mb-4"
               >
-                🎉 You've clicked {interactionCount} times! Keep going!
+                🎉 You&apos;ve clicked {interactionCount} times! Keep going!
               </motion.div>
             )}
           </motion.div>
@@ -523,7 +523,7 @@ export default function VoiceAnalysisPage() {
                 transition={{ duration: 0.5 }}
                 className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-200/60 text-center"
               >
-                <p className="text-lg text-gray-700 mb-3 italic">"{funQuotes[currentQuote]?.text}"</p>
+                <p className="text-lg text-gray-700 mb-3 italic">&quot;{funQuotes[currentQuote]?.text}&quot;</p>
                 <p className="text-sm text-gray-500 font-medium">— {funQuotes[currentQuote]?.author}</p>
               </motion.div>
             </AnimatePresence>

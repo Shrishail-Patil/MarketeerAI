@@ -309,16 +309,16 @@ export default function ProductPage() {
                       <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200/60">
                         <div className="text-sm text-gray-600 mb-2">Generated Tweet #1</div>
                         <div className="text-gray-900">
-                          "Just shipped a new feature that saves our users 2 hours per week! 🚀 Sometimes the smallest
+                          &quot;Just shipped a new feature that saves our users 2 hours per week! 🚀 Sometimes the smallest
                           improvements make the biggest impact. What&apos;s the last feature you built that surprised you
-                          with its impact? #SaaS #ProductDev"
+                          with its impact? #SaaS #ProductDev&quot;
                         </div>
                       </div>
                       <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200/60">
                         <div className="text-sm text-gray-600 mb-2">Generated Tweet #2</div>
                         <div className="text-gray-900">
-                          "Hot take: The best SaaS features are the ones users don&apos;t even notice. They just make
-                          everything feel... easier. That&apos;s the magic we&apos;re chasing with every update ✨"
+                          &quot;Hot take: The best SaaS features are the ones users don&apos;t even notice. They just make
+                          everything feel... easier. That&apos;s the magic we&apos;re chasing with every update ✨&quot;
                         </div>
                       </div>
                     </div>
@@ -567,7 +567,7 @@ export default function ProductPage() {
                 >
                   <div className="mb-4">
                     <div className="text-2xl font-bold text-blue-600 mb-2">{testimonial.metrics}</div>
-                    <p className="text-gray-700 leading-relaxed">"{testimonial.quote}"</p>
+                    <p className="text-gray-700 leading-relaxed">&quot;{testimonial.quote}&quot;</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -607,7 +607,7 @@ export default function ProductPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              Join hundreds of SaaS developers who've automated their Twitter marketing with Marketeer
+              Join hundreds of SaaS developers who&apos;ve automated their Twitter marketing with Marketeer
             </motion.p>
 
             <motion.div
