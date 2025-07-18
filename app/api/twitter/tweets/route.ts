@@ -75,34 +75,34 @@ export async function POST(request: NextRequest) {
 }
 
 // app/api/twitter/analytics/route.ts  
-export async function getAnalytics(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
+// export async function getAnalytics(request: NextRequest) {
+//   try {
+//     const session = await getServerSession(authOptions)
     
-    if (!session?.userId) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
-    }
+//     if (!session?.userId) {
+//       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+//     }
 
-    const { searchParams } = new URL(request.url)
-    const tweetId = searchParams.get("tweet_id")
+//     const { searchParams } = new URL(request.url)
+//     const tweetId = searchParams.get("tweet_id")
 
-    if (!tweetId) {
-      return NextResponse.json(
-        { error: "Tweet ID is required" }, 
-        { status: 400 }
-      )
-    }
+//     if (!tweetId) {
+//       return NextResponse.json(
+//         { error: "Tweet ID is required" }, 
+//         { status: 400 }
+//       )
+//     }
 
-    const analytics = await makeTwitterRequest(
-      `tweets/${tweetId}?tweet.fields=public_metrics,non_public_metrics,organic_metrics`
-    )
+//     const analytics = await makeTwitterRequest(
+//       `tweets/${tweetId}?tweet.fields=public_metrics,non_public_metrics,organic_metrics`
+//     )
 
-    return NextResponse.json(analytics)
-  } catch (error) {
-    console.error("Error fetching analytics:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch analytics" }, 
-      { status: 500 }
-    )
-  }
-}
+//     return NextResponse.json(analytics)
+//   } catch (error) {
+//     console.error("Error fetching analytics:", error)
+//     return NextResponse.json(
+//       { error: "Failed to fetch analytics" }, 
+//       { status: 500 }
+//     )
+//   }
+// }
