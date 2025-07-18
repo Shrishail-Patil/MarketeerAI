@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Extract username from session (adjust based on your session structure)
-    const username = session.user.email || session.user.name || session.user.username
+    const username = session.user.email || session.user.name
     
     if (!username) {
       return NextResponse.json(

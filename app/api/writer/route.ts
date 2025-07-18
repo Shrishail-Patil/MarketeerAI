@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Together from "together-ai"
 import { createClient } from '@supabase/supabase-js'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '../auth/[...nextauth]/route'
+import { authOptions } from "@/lib/auth";
 
 const together = new Together({
   apiKey: process.env.NEXT_PUBLIC_TOGETHER_API_KEY,
