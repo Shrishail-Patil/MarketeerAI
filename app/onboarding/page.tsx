@@ -99,7 +99,7 @@ export default function OnboardingPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome to Marketeer! 🎉</h1>
 
           <p className="text-lg text-gray-600 mb-8">
-            Your X account has been connected successfully. Let's set up your AI marketing assistant.
+            Your X account has been connected successfully. Let&apos;s set up your AI marketing assistant.
           </p>
 
           <motion.button

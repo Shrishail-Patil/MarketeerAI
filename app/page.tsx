@@ -246,7 +246,7 @@ export default function ProductPage() {
                 <motion.p variants={itemVariants} className="text-xl text-gray-600 mb-8 leading-relaxed">
                   Marketeer learns your unique voice from your existing tweets and generates daily, authentic marketing
                   content for your SaaS.
-                  <span className="font-semibold text-gray-900"> Focus on building, we'll handle the marketing.</span>
+                  <span className="font-semibold text-gray-900"> Focus on building, we&apos;ll handle the marketing.</span>
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -310,15 +310,15 @@ export default function ProductPage() {
                         <div className="text-sm text-gray-600 mb-2">Generated Tweet #1</div>
                         <div className="text-gray-900">
                           "Just shipped a new feature that saves our users 2 hours per week! 🚀 Sometimes the smallest
-                          improvements make the biggest impact. What's the last feature you built that surprised you
+                          improvements make the biggest impact. What&apos;s the last feature you built that surprised you
                           with its impact? #SaaS #ProductDev"
                         </div>
                       </div>
                       <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200/60">
                         <div className="text-sm text-gray-600 mb-2">Generated Tweet #2</div>
                         <div className="text-gray-900">
-                          "Hot take: The best SaaS features are the ones users don't even notice. They just make
-                          everything feel... easier. That's the magic we're chasing with every update ✨"
+                          "Hot take: The best SaaS features are the ones users don&apos;t even notice. They just make
+                          everything feel... easier. That&apos;s the magic we&apos;re chasing with every update ✨"
                         </div>
                       </div>
                     </div>

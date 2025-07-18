@@ -64,7 +64,7 @@ export default function VoiceAnalysisPage() {
       author: "Twitter Statistics",
     },
     {
-      text: '"The best marketing doesn\'t feel like marketing." - Tom Fishburne',
+      text: '&quot;The best marketing doesn&apos;t feel like marketing.&quot; - Tom Fishburne',
       author: "Marketing Wisdom",
     },
     {
@@ -72,7 +72,7 @@ export default function VoiceAnalysisPage() {
       author: "Social Media Facts",
     },
     {
-      text: '"Content is fire, social media is gasoline." - Jay Baer',
+      text: '&quot;Content is fire, social media is gasoline.&quot; - Jay Baer',
       author: "Content Marketing",
     },
     {
@@ -80,7 +80,7 @@ export default function VoiceAnalysisPage() {
       author: "Captain Obvious",
     },
     {
-      text: '"Your brand is what people say about you when you\'re not in the room." - Jeff Bezos',
+      text: '&quot;Your brand is what people say about you when you&apos;re not in the room.&quot; - Jeff Bezos',
       author: "Branding Guru",
     },
     {
@@ -88,7 +88,7 @@ export default function VoiceAnalysisPage() {
       author: "Tech News",
     },
     {
-      text: '"The aim of marketing is to know and understand the customer so well the product sells itself." - Peter Drucker',
+      text: '&quot;The aim of marketing is to know and understand the customer so well the product sells itself.&quot; - Peter Drucker',
       author: "Management Legend",
     },
   ]

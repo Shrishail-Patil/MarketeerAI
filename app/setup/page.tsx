@@ -450,7 +450,7 @@ export default function SetupPage() {
                 </label>
                 {errors.targetAudience && <p className="text-red-500 text-sm mt-2">{errors.targetAudience}</p>}
                 <p className="text-gray-500 text-sm mt-2">
-                  e.g., "SaaS founders", "Small business owners", "Marketing teams"
+                  e.g., &quot;SaaS founders&quot;, &quot;Small business owners&quot;, &quot;Marketing teams&quot;
                 </p>
               </motion.div>
 
