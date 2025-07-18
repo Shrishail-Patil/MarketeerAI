@@ -16,7 +16,13 @@ import {
   Save,
   X,
   AlertTriangle,
+  Bell,
+  User,
+  ChevronDown,
+  Search,
 } from "lucide-react"
+import { useRouter } from "next/navigation";
+import Footer from "../dashboard/components/Footer";
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
@@ -24,6 +30,10 @@ export default function ProfilePage() {
   const [showDisconnectDialog, setShowDisconnectDialog] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [profile, setProfile] = useState<{ username: string; image: string }>({ username: "", image: "" });
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const { data: session } = useSession();
 
@@ -38,19 +48,6 @@ export default function ProfilePage() {
   });
 
   const [editData, setEditData] = useState(userData);
-
-  /*
-  // Mock user data
-  const [userData, setUserData] = useState({
-    name: "Alex Chen",
-    email: "alex@example.com",
-    xHandle: "@alexchen_dev",
-    productName: "DevTools Pro",
-    productDescription: "A comprehensive development toolkit for modern web developers",
-    targetAudience: "Web developers and software engineers",
-    tonePreference: "Technical and friendly",
-  })
-  */
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -97,6 +94,22 @@ export default function ProfilePage() {
 
     fetchUserData();
   }, [session]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        openProfileMenu &&
+        !(event.target as Element).closest(".profile-menu")
+      ) {
+        setOpenProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openProfileMenu]);
 
   const handleSave = async () => {
     setIsLoading(true)
@@ -199,70 +212,218 @@ export default function ProfilePage() {
       </div>
 
       <div className="relative z-10">
-        {/* Header */}
+        {/* Header - Updated to match Dashboard */}
         <motion.header
           className="px-6 py-6 sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-gray-200/70"
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.6 }}
         >
-          <div className="max-w-4xl mx-auto">
+          <div className="mx-auto">
             <div className="flex justify-between items-center">
+              {/* Logo and Greeting */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                    Profile & Settings
+                    Marketeer
                   </span>
+                  <h1 className="text-sm text-gray-600">
+                    Profile & Settings
+                  </h1>
                 </div>
               </div>
 
-              {/* Edit Toggle */}
-              {!isEditing ? (
+              {/* Action Icons */}
+              <div className="flex items-center gap-4">
+                {/* Search Toggle */}
                 <motion.button
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setIsEditing(true)}
+                  className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowSearch(!showSearch)}
                 >
-                  <Edit className="w-4 h-4" />
-                  <span>Edit</span>
+                  <Search className="w-5 h-5" />
                 </motion.button>
-              ) : (
-                <div className="flex gap-2">
+
+                {/* Notifications */}
+                <div className="relative">
                   <motion.button
-                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:border-gray-400 text-gray-700 font-semibold rounded-xl transition-colors"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleCancel}
+                    className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <X className="w-4 h-4" />
-                    <span>Cancel</span>
-                  </motion.button>
-                  <motion.button
-                    className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleSave}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <Save className="w-4 h-4" />
-                    )}
-                    <span>Save</span>
+                    <Bell className="w-5 h-5" />
                   </motion.button>
                 </div>
-              )}
+
+                {/* Profile Menu */}
+                <div className="relative profile-menu">
+                  <motion.button
+                    className="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setOpenProfileMenu(!openProfileMenu)}
+                  >
+                    {profile.image ? (
+                      <img
+                        src={profile.image}
+                        alt="User avatar"
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                        {profile.username?.charAt(0) || "U"}
+                      </div>
+                    )}
+                    <ChevronDown className="w-4 h-4 text-gray-600" />
+                  </motion.button>
+
+                  {/* Profile Dropdown */}
+                  <AnimatePresence>
+                    {openProfileMenu && (
+                      <motion.div
+                        className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200/70 overflow-hidden z-30"
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="p-3 border-b border-gray-200/70">
+                          <div className="flex items-center gap-3">
+                            {profile.image ? (
+                              <img
+                                src={profile.image}
+                                alt="User avatar"
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                                {profile.username?.charAt(0) || "U"}
+                              </div>
+                            )}
+                            <div>
+                              <div className="font-semibold text-gray-900">
+                                {profile.username || "Loading..."}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                {session?.user?.email}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="p-2">
+                          <button
+                            className="flex items-center gap-2 w-full p-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                            onClick={() => router.push("/dashboard")}
+                          >
+                            <User className="w-4 h-4" />
+                            <span>Dashboard</span>
+                          </button>
+                          <button className="flex items-center gap-2 w-full p-2 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <Settings className="w-4 h-4" />
+                            <span>Settings</span>
+                          </button>
+                          <button 
+                            className="flex items-center gap-2 w-full p-2 text-left text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                            onClick={() => setShowLogoutDialog(true)}
+                          >
+                            <LogOut className="w-4 h-4" />
+                            <span>Sign Out</span>
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Edit Controls - Only show when not in edit mode */}
+                {!isEditing && (
+                  <motion.button
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Edit className="w-4 h-4" />
+                    <span>Edit</span>
+                  </motion.button>
+                )}
+              </div>
             </div>
+
+            {/* Search Bar (Expandable) */}
+            <AnimatePresence>
+              {showSearch && (
+                <motion.div
+                  className="mt-4"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <input
+                      type="text"
+                      placeholder="Search settings..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none transition-all"
+                    />
+                    {searchQuery && (
+                      <button
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        onClick={() => setSearchQuery("")}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Edit Controls Bar - Show when in edit mode */}
+            {isEditing && (
+              <motion.div
+                className="mt-4 flex justify-end gap-2"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.button
+                  className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:border-gray-400 text-gray-700 font-semibold rounded-xl transition-colors"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleCancel}
+                >
+                  <X className="w-4 h-4" />
+                  <span>Cancel</span>
+                </motion.button>
+                <motion.button
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleSave}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                  <span>Save</span>
+                </motion.button>
+              </motion.div>
+            )}
           </div>
         </motion.header>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="max-w-5xl mx-auto px-6 py-8">
           <motion.div className="space-y-6" variants={containerVariants} initial="hidden" animate="visible">
             {/* Profile Section */}
             <motion.div
@@ -271,7 +432,6 @@ export default function ProfilePage() {
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                  {/* {userData.name.charAt(0)} */}
                   {profile.image ? (
                     <img
                       src={profile.image}
@@ -546,25 +706,12 @@ export default function ProfilePage() {
 
         {/* Footer */}
         <motion.footer
-          className="px-6 py-8 border-t border-gray-200/50 bg-white/80 backdrop-blur-sm"
+          className="px-6 py-4 border-t border-gray-200/50 bg-white/80 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
-                <Sparkles className="w-3 h-3 text-white" />
-              </div>
-              <span className="text-sm font-medium text-gray-900">Marketeer</span>
-            </div>
-
-            <div className="flex items-center gap-6 text-xs text-gray-600">
-              <button className="hover:text-gray-900 transition-colors">Help</button>
-              <button className="hover:text-gray-900 transition-colors">Privacy</button>
-              <button className="hover:text-gray-900 transition-colors">Terms</button>
-            </div>
-          </div>
+        <Footer />
         </motion.footer>
       </div>
     </div>

@@ -67,76 +67,76 @@ export default function PostedTweets({
   const [lastAnalyticsUpdate, setLastAnalyticsUpdate] = useState<Date | null>(null);
 
   // Fetch analytics for posted tweets
-  const fetchAnalytics = async () => {
-    const tweetIdsToFetch = tweets
-      .filter(tweet => tweet.tweet_id) // Only tweets that have been posted to Twitter
-      .map(tweet => tweet.tweet_id!)
-      .filter(Boolean);
+  // const fetchAnalytics = async () => {
+  //   const tweetIdsToFetch = tweets
+  //     .filter(tweet => tweet.tweet_id) // Only tweets that have been posted to Twitter
+  //     .map(tweet => tweet.tweet_id!)
+  //     .filter(Boolean);
 
-    if (tweetIdsToFetch.length === 0) return;
+  //   if (tweetIdsToFetch.length === 0) return;
 
-    setIsLoadingAnalytics(true);
-    try {
-      const response = await fetch('/api/get-analytic', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tweetIds: tweetIdsToFetch,
-          granularity: 'total',
-          fields: ['impressions', 'likes', 'replies', 'retweets', 'quotes', 'video_views']
-        }),
-      });
+  //   setIsLoadingAnalytics(true);
+  //   try {
+  //     const response = await fetch('/api/get-analytic', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         tweetIds: tweetIdsToFetch,
+  //         granularity: 'total',
+  //         fields: ['impressions', 'likes', 'replies', 'retweets', 'quotes', 'video_views']
+  //       }),
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch analytics');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch analytics');
+  //     }
 
-      const { analytics } = await response.json();
+  //     const { analytics } = await response.json();
       
-      // Transform the analytics data
-      const transformedAnalytics: AnalyticsData = {};
+  //     // Transform the analytics data
+  //     const transformedAnalytics: AnalyticsData = {};
       
-      if (analytics?.data) {
-        analytics.data.forEach((tweetAnalytics: any) => {
-          const tweetId = tweetAnalytics.id;
-          const metrics = tweetAnalytics.organic_metrics || tweetAnalytics.non_public_metrics || {};
+  //     if (analytics?.data) {
+  //       analytics.data.forEach((tweetAnalytics: any) => {
+  //         const tweetId = tweetAnalytics.id;
+  //         const metrics = tweetAnalytics.organic_metrics || tweetAnalytics.non_public_metrics || {};
           
-          transformedAnalytics[tweetId] = {
-            impressions: metrics.impression_count || 0,
-            likes: metrics.like_count || 0,
-            replies: metrics.reply_count || 0,
-            retweets: metrics.retweet_count || 0,
-            quotes: metrics.quote_count || 0,
-            video_views: metrics.video_view_count || 0,
-          };
-        });
-      }
+  //         transformedAnalytics[tweetId] = {
+  //           impressions: metrics.impression_count || 0,
+  //           likes: metrics.like_count || 0,
+  //           replies: metrics.reply_count || 0,
+  //           retweets: metrics.retweet_count || 0,
+  //           quotes: metrics.quote_count || 0,
+  //           video_views: metrics.video_view_count || 0,
+  //         };
+  //       });
+  //     }
 
-      setAnalyticsData(transformedAnalytics);
-      setLastAnalyticsUpdate(new Date());
-    } catch (error) {
-      console.error('Error fetching analytics:', error);
-    } finally {
-      setIsLoadingAnalytics(false);
-    }
-  };
+  //     setAnalyticsData(transformedAnalytics);
+  //     setLastAnalyticsUpdate(new Date());
+  //   } catch (error) {
+  //     console.error('Error fetching analytics:', error);
+  //   } finally {
+  //     setIsLoadingAnalytics(false);
+  //   }
+  // };
 
   // Auto-fetch analytics when component mounts and tweets change
-  useEffect(() => {
-    if (tweets.length > 0) {
-      fetchAnalytics();
-    }
-  }, [tweets.length]);
+  // useEffect(() => {
+  //   if (tweets.length > 0) {
+  //     fetchAnalytics();
+  //   }
+  // }, [tweets.length]);
 
   // Enhanced refresh function
-  const handleRefreshWithAnalytics = async () => {
-    await Promise.all([
-      onRefresh(),
-      fetchAnalytics()
-    ]);
-  };
+  // const handleRefreshWithAnalytics = async () => {
+  //   await Promise.all([
+  //     onRefresh(),
+  //     fetchAnalytics()
+  //   ]);
+  // };
 
   // Merge analytics data with tweets
   const tweetsWithAnalytics = tweets.map(tweet => {
@@ -171,10 +171,10 @@ export default function PostedTweets({
 
   return (
     <>
-      {/* Analytics Summary */}
+      {/* Analytics Summary Placeholder */}
       {tweets.length > 0 && (
         <motion.div
-          className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6 border border-blue-100"
+          className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6 border border-blue-100 backdrop-blur-md"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -184,52 +184,15 @@ export default function PostedTweets({
               <BarChart3 className="w-5 h-5 text-blue-600" />
               <h3 className="text-lg font-semibold text-gray-900">Analytics Overview</h3>
             </div>
-            <div className="flex items-center gap-2">
-              {lastAnalyticsUpdate && (
-                <span className="text-xs text-gray-500">
-                  Updated {lastAnalyticsUpdate.toLocaleTimeString()}
-                </span>
-              )}
-              <motion.button
-                className="p-2 text-blue-600 hover:text-blue-700 transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={fetchAnalytics}
-                disabled={isLoadingAnalytics}
-              >
-                <RefreshCw className={`w-4 h-4 ${isLoadingAnalytics ? 'animate-spin' : ''}`} />
-              </motion.button>
-            </div>
+            <span className="text-sm text-gray-400 italic">Coming soon</span>
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white/70 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-blue-600">
-                {totalAnalytics.impressions.toLocaleString()}
-              </div>
-              <div className="text-sm text-gray-600">Impressions</div>
-            </div>
-            <div className="bg-white/70 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-red-500">
-                {totalAnalytics.likes.toLocaleString()}
-              </div>
-              <div className="text-sm text-gray-600">Likes</div>
-            </div>
-            <div className="bg-white/70 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">
-                {totalAnalytics.retweets.toLocaleString()}
-              </div>
-              <div className="text-sm text-gray-600">Retweets</div>
-            </div>
-            <div className="bg-white/70 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-purple-600">
-                {totalAnalytics.replies.toLocaleString()}
-              </div>
-              <div className="text-sm text-gray-600">Replies</div>
-            </div>
+          <div className="text-center text-sm text-gray-500 py-6">
+            Tweet analytics will be available soon. Stay tuned!
           </div>
         </motion.div>
       )}
+
+      
 
       {/* Filter Bar */}
       <div className="flex justify-between items-center mb-6">
@@ -248,7 +211,7 @@ export default function PostedTweets({
             className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={handleRefreshWithAnalytics}
+            // onClick={}
           >
             <RefreshCw className="w-4 h-4" />
             <span>Refresh</span>
