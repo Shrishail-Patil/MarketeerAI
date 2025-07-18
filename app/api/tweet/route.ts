@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 // Replace with actual ID of the Build In Public community
 const BUILD_IN_PUBLIC_COMMUNITY_ID = "1550660791162697728";
