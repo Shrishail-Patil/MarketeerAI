@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { TwitterApiResponse, TwitterTweet } from "../../../../types/auth"
-import { authOptions } from "../../auth/[...nextauth]/route"
+import { authOptions } from '@/lib/auth';
 import { makeTwitterRequest } from "../../../../lib/session"
 
 export async function GET(request: NextRequest) {
