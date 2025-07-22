@@ -1,7 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
 import {
   ArrowRight,
   Sparkles,
@@ -19,10 +20,17 @@ import {
   Wand2,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import LogoBtn from "@/components/LogoBtn"
 
 export default function ProductPage() {
   const [activeFeature, setActiveFeature] = useState(0)
   const router = useRouter()
+  const { data: session } = useSession()
+  useEffect(() => {
+  if(session) {
+    router.push("/dashboard")
+  }
+  }, [router, session])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -149,7 +157,7 @@ export default function ProductPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-white overflow-hidden">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -182,20 +190,21 @@ export default function ProductPage() {
       <div className="relative z-10">
         {/* Header */}
         <motion.header
-          className="px-6 py-6"
+          className="px-4 sm:px-6 py-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 Marketeer
               </span>
-            </div>
+            </div> */}
+            <LogoBtn/>
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Features
@@ -210,18 +219,18 @@ export default function ProductPage() {
                 className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => router.push("/onboarding")}
+                onClick={() => router.push(session ? "/dashboard" : "/onboarding")}
               >
-                Get Started
+                {session ? "Continue to Dashboard" : "Get Started"}
               </motion.button>
             </div>
           </div>
         </motion.header>
 
         {/* Hero Section */}
-        <motion.section className="px-6 py-16" variants={containerVariants} initial="hidden" animate="visible">
+        <motion.section className="px-4 sm:px-6 py-16" variants={containerVariants} initial="hidden" animate="visible">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid gap-12 lg:grid-cols-2 items-center">
               <div>
                 {/* Badge */}
                 <motion.div variants={itemVariants} className="inline-block mb-6">
@@ -232,7 +241,7 @@ export default function ProductPage() {
                 </motion.div>
 
                 {/* Main Headline */}
-                <motion.h1 variants={itemVariants} className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
+                <motion.h1 variants={itemVariants} className="text-4xl lg:text-6xl font-bold leading-tight mb-6 text-center lg:text-left">
                   <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
                     Marketing Your SaaS
                   </span>
@@ -243,29 +252,27 @@ export default function ProductPage() {
                 </motion.h1>
 
                 {/* Subtitle */}
-                <motion.p variants={itemVariants} className="text-xl text-gray-600 mb-8 leading-relaxed">
+                <motion.p variants={itemVariants} className="text-xl text-gray-600 mb-8 leading-relaxed text-center lg:text-left">
                   Marketeer learns your unique voice from your existing tweets and generates daily, authentic marketing
                   content for your SaaS.
                   <span className="font-semibold text-gray-900"> Focus on building, we&apos;ll handle the marketing.</span>
                 </motion.p>
 
                 {/* CTA Buttons */}
-                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mb-8">
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 flex-wrap mb-8">
                   <motion.button
-                    className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+                    className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
                     whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(59, 130, 246, 0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => router.push("/onboarding")}
+                    onClick={() => router.push(session ? "/dashboard" : "/onboarding")}
                   >
                     <div className="flex items-center gap-2">
-                      <span>Start Free Trial</span>
+                      <span>{session ? "Continue to Dashboard" : "Start Free Trial"}</span>
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </motion.button>
-
-                  
-                  <motion.button
-                    className="px-8 py-4 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold rounded-2xl hover:shadow-md transition-all duration-300 text-lg group"
+                  {/* <motion.button
+                    className="w-full sm:w-auto px-8 py-4 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold rounded-2xl hover:shadow-md transition-all duration-300 text-lg group"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -273,7 +280,7 @@ export default function ProductPage() {
                       <Play className="w-5 h-5" />
                       <span>Watch Demo</span>
                     </div>
-                  </motion.button>
+                  </motion.button> */}
                 </motion.div>
 
                 {/* Social Proof */}
@@ -348,7 +355,7 @@ export default function ProductPage() {
 
         {/* Benefits Section */}
         <motion.section
-          className="px-6 py-16 bg-gradient-to-b from-gray-50/50 to-white"
+          className="px-4 sm:px-6 py-16 bg-gradient-to-b from-gray-50/50 to-white"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -395,7 +402,7 @@ export default function ProductPage() {
         {/* Features Section */}
         <motion.section
           id="features"
-          className="px-6 py-16"
+          className="px-4 sm:px-6 py-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -416,7 +423,7 @@ export default function ProductPage() {
               </p>
             </motion.div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div className="grid gap-12 lg:grid-cols-2 items-start">
               {/* Feature List */}
               <div className="space-y-4">
                 {features.map((feature, index) => (
@@ -488,7 +495,7 @@ export default function ProductPage() {
 
         {/* How It Works */}
         <motion.section
-          className="px-6 py-16 bg-gradient-to-b from-gray-50/50 to-white backdrop-blur-sm"
+          className="px-4 sm:px-6 py-16 bg-gradient-to-b from-gray-50/50 to-white backdrop-blur-sm"
           id="how-it-works"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -534,7 +541,7 @@ export default function ProductPage() {
         {/* Testimonials */}
         <motion.section
           id="testimonials"
-          className="px-6 py-16"
+          className="px-4 sm:px-6 py-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -586,7 +593,7 @@ export default function ProductPage() {
 
         {/* CTA Section */}
         <motion.section
-          className="px-6 py-16 bg-gradient-to-r from-blue-600 to-purple-600"
+          className="px-4 sm:px-6 py-16 bg-gradient-to-r from-blue-600 to-purple-600"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -611,30 +618,30 @@ export default function ProductPage() {
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 flex-wrap justify-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
               <motion.button
-                className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg group"
+                className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg group"
                 whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(255, 255, 255, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => router.push("/onboarding")}
+                onClick={() => router.push(session ? "/dashboard" : "/onboarding")}
               >
                 <div className="flex items-center gap-2">
-                  <span>Start Free Trial</span>
+                  <span>{session ? "Continue to Dashboard" : "Start Free Trial"}</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </motion.button>
-              <motion.button
-                className="px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 transition-all duration-300 text-lg"
+              {/* <motion.button
+                className="w-full sm:w-auto px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 transition-all duration-300 text-lg"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
                 Schedule Demo
-              </motion.button>
+              </motion.button> */}
             </motion.div>
 
             <motion.p
@@ -644,14 +651,15 @@ export default function ProductPage() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              No credit card required • 14-day free trial • Cancel anytime
+              {/* No credit card required • 14-day free trial • Cancel anytime */}
+              Pricing model coming soon! • Sign up to be notified.
             </motion.p>
           </div>
         </motion.section>
 
         {/* Footer */}
         <motion.footer
-          className="px-6 py-12 bg-gray-900 text-white"
+          className="px-4 sm:px-6 py-12 bg-gray-900 text-white"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -675,7 +683,7 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 <h3 className="font-semibold mb-4">Product</h3>
                 <ul className="space-y-2 text-gray-400">
                   <li>
@@ -699,7 +707,7 @@ export default function ProductPage() {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> */}
 
               <div>
                 <h3 className="font-semibold mb-4">Support</h3>

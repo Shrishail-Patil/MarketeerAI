@@ -16,7 +16,6 @@ import {
   Repeat,
 } from "lucide-react";
 
-
 interface Tweet {
   id: number;
   content: string;
@@ -80,7 +79,7 @@ export default function TweetCard({
       : status.charAt(0).toUpperCase() + status.slice(1);
   };
 
-  return (
+  return ( 
     <motion.div
       className="p-6 bg-white rounded-2xl border border-gray-200/70 shadow-sm hover:shadow-md transition-shadow"
       initial={{ opacity: 0, y: 20 }}
@@ -140,121 +139,61 @@ export default function TweetCard({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          {tweet.status === "ai-generated" && (
-            <>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onAction("edit", tweet.id)}
+          {(tweet.status === "ai-generated" || tweet.status === "scheduled") && (
+            <div className="flex items-center gap-2">
+              {/* Animated Post Button */}
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
               >
-                <Edit className="w-4 h-4" />
-              </motion.button>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-purple-600 transition-colors rounded-full hover:bg-purple-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onAction("regenerate", tweet.id)}
-              >
-                <RefreshCw className="w-4 h-4" />
-              </motion.button>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-orange-600 transition-colors rounded-full hover:bg-orange-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onAction("schedule", tweet.id)}
-              >
-                <Calendar className="w-4 h-4" />
-              </motion.button>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-green-600 transition-colors rounded-full hover:bg-green-50 disabled:opacity-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                disabled={postingTweetId === tweet.id}
-                onClick={() => onPost(tweet)}
-              >
-                {postingTweetId === tweet.id ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Send className="w-4 h-4" />
-                )}
-              </motion.button>
-            </>
-          )}
-
-          {tweet.status === "scheduled" && (
-            <>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onAction("edit", tweet.id)}
-              >
-                <Edit className="w-4 h-4" />
-              </motion.button>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-orange-600 transition-colors rounded-full hover:bg-orange-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onAction("reschedule", tweet.id)}
-              >
-                <Calendar className="w-4 h-4" />
-              </motion.button>
-              <motion.button
-                className="p-2 text-gray-600 hover:text-green-600 transition-colors rounded-full hover:bg-green-50"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => onAction("post-now", tweet.id)}
-              >
-                <Send className="w-4 h-4" />
-              </motion.button>
-            </>
-          )}
-
-          {/* More Options Menu */}
-          <div className="relative tweet-menu">
-            <motion.button
-              className="p-2 text-gray-600 hover:text-gray-900 transition-colors rounded-full hover:bg-gray-100"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setOpenTweetMenu(!openTweetMenu)}
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </motion.button>
-
-            <AnimatePresence>
-              {openTweetMenu && (
-                <motion.div
-                  className="absolute right-0 mt-1 w-36 bg-white rounded-xl shadow-lg border border-gray-200/70 overflow-hidden z-10"
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
+                <motion.button
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-green-600 border border-green-600 transition-all duration-200 rounded-sm shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                  whileHover={{ scale: 1.0005, boxShadow: "0 4px 20px 0 green-100" }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={postingTweetId === tweet.id}
+                  onClick={() => onPost(tweet)}
                 >
-                  <button
-                    className="flex items-center gap-2 w-full p-2 text-left text-gray-700 hover:bg-gray-100 transition-colors"
-                    onClick={() => {
-                      onAction("copy", tweet.id);
-                      setOpenTweetMenu(false);
-                    }}
-                  >
-                    <Copy className="w-4 h-4" />
-                    <span>Copy</span>
-                  </button>
-                  <button
-                    className="flex items-center gap-2 w-full p-2 text-left text-red-600 hover:bg-red-50 transition-colors"
-                    onClick={() => {
-                      onAction("delete", tweet.id);
-                      setOpenTweetMenu(false);
-                    }}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    <span>Delete</span>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  {postingTweetId === tweet.id ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      Posting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Post
+                    </>
+                  )}
+                </motion.button>
+              </motion.div>
+
+              {/* Animated Copy Button */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <motion.button
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-blue-600 border border-blue-600 hover:bg-blue-50 transition-all duration-200 rounded-sm shadow-md hover:shadow-lg"
+                  whileHover={{ scale: 1.0005, boxShadow: "0 4px 20px 0 blue-100" }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(tweet.content)
+                      .then(() => console.log('Tweet copied to clipboard!'))
+                      .catch((err) => console.error('Failed to copy tweet:', err));
+                  }}
+                >
+                  <Copy className="w-4 h-4" />
+                  Copy
+                </motion.button>
+              </motion.div>
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

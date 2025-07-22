@@ -16,6 +16,7 @@ import {
   Rocket,
   Target,
 } from "lucide-react"
+import LogoBtn from "@/components/LogoBtn"
 
 export default function VoiceAnalysisPage() {
   const [progress, setProgress] = useState(0)
@@ -343,14 +344,7 @@ export default function VoiceAnalysisPage() {
           transition={{ duration: 0.6 }}
         >
           <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Marketeer
-              </span>
-            </div>
+            <LogoBtn  />
             <motion.div
               className="text-sm text-gray-700 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 backdrop-blur-sm rounded-full border border-blue-200/60 shadow-sm"
               whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.15)" }}
@@ -554,7 +548,7 @@ export default function VoiceAnalysisPage() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-200/50 text-center text-sm text-gray-500">
-              © 2024 Marketeer. All rights reserved.
+              © 2025 Marketeer. All rights reserved.
             </div>
           </div>
         </motion.footer>

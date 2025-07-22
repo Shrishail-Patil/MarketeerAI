@@ -7,6 +7,7 @@ import { useState, useEffect } from "react"
 import { ArrowRight, Sparkles, Wand2, X, Plus, Twitter, Save } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import LogoBtn from "@/components/LogoBtn"
 
 export default function SetupPage() {
   const { data: session, status } = useSession()
@@ -304,22 +305,15 @@ export default function SetupPage() {
       <div className="relative z-10">
         {/* Header */}
         <motion.header
-          className="px-6 py-6"
+          className="px-4 sm:px-6 lg:px-8 py-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Marketeer
-              </span>
-            </div>
+            <LogoBtn />
             <motion.div
-              className="text-sm text-gray-700 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 backdrop-blur-sm rounded-full border border-blue-200/60 shadow-sm"
+              className="text-sm text-gray-700 px-4 sm:px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 backdrop-blur-sm rounded-full border border-blue-200/60 shadow-sm"
               whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.15)" }}
               transition={{ duration: 0.2 }}
             >
@@ -329,7 +323,7 @@ export default function SetupPage() {
         </motion.header>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center mb-12" variants={containerVariants} initial="hidden" animate="visible">
             {/* Badge */}
             <motion.div variants={itemVariants} className="inline-block mb-6">
@@ -340,7 +334,7 @@ export default function SetupPage() {
             </motion.div>
 
             {/* Main Headline */}
-            <motion.h1 variants={itemVariants} className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
+            <motion.h1 variants={itemVariants} className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight mb-6">
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
                 Tell Us About
               </span>
@@ -511,7 +505,7 @@ export default function SetupPage() {
                 <label className="block text-lg font-medium text-gray-700">
                   Tone Preference <span className="text-red-500">*</span>
                 </label>
-                <div className="grid md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {toneOptions.map((option) => (
                     <motion.label
                       key={option.value}
@@ -622,7 +616,7 @@ export default function SetupPage() {
 
         {/* Footer */}
         <motion.footer
-          className="px-6 py-8 border-t border-gray-200/50 bg-gradient-to-r from-gray-50/50 to-white backdrop-blur-sm mt-16"
+          className="px-4 sm:px-6 lg:px-8 py-8 border-t border-gray-200/50 bg-gradient-to-r from-gray-50/50 to-white backdrop-blur-sm mt-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -642,7 +636,7 @@ export default function SetupPage() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-200/50 text-center text-sm text-gray-500">
-              © 2024 Marketeer. All rights reserved.
+              © 2025 Marketeer. All rights reserved.
             </div>
           </div>
         </motion.footer>

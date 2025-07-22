@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import { ArrowRight, Sparkles, Twitter, Shield, CheckCircle, Eye, Clock } from "lucide-react"
 import { signIn, useSession } from "next-auth/react";
+import LogoBtn from "@/components/LogoBtn";
 
 export default function OnboardingPage() {
   const { data: session } = useSession();
@@ -16,7 +17,7 @@ export default function OnboardingPage() {
       .finally(() => setIsLoading(false));
   };
 
-  const isAuthenticated = Boolean(session?.user);
+  const isAuthenticated = Boolean(session?.user); 
 
 
   const containerVariants = {
@@ -102,17 +103,19 @@ export default function OnboardingPage() {
             Your X account has been connected successfully. Let&apos;s set up your AI marketing assistant.
           </p>
 
-          <motion.button
-            className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg group"
-            whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(59, 130, 246, 0.3)" }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => (window.location.href = "/setup")}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <span>Continue Setup</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </motion.button>
+          <div className="px-4 sm:px-6">
+            <motion.button
+              className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg group"
+              whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(59, 130, 246, 0.3)" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => (window.location.href = "/setup")}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <span>Continue Setup</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </motion.button>
+          </div>
         </motion.div>
       </div>
     )
@@ -152,20 +155,13 @@ export default function OnboardingPage() {
       <div className="relative z-10">
         {/* Header */}
         <motion.header
-          className="px-6 py-6"
+          className="px-4 py-4 sm:px-6 sm:py-6"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Marketeer
-              </span>
-            </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
+            <LogoBtn />
             <motion.div
               className="text-sm text-gray-700 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 backdrop-blur-sm rounded-full border border-blue-200/60 shadow-sm"
               whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(59, 130, 246, 0.15)" }}
@@ -178,118 +174,120 @@ export default function OnboardingPage() {
 
         {/* Main Content */}
         <div className="flex items-center justify-center min-h-[calc(100vh-200px)] px-6">
-          <motion.div
-            className="max-w-2xl mx-auto text-center"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Badge */}
-            <motion.div variants={itemVariants} className="inline-block mb-6">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200/60 rounded-full shadow-sm">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-semibold text-gray-800">Get Started in Minutes</span>
-              </div>
-            </motion.div>
-
-            {/* Main Headline */}
-            <motion.h1 variants={itemVariants} className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
-              <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                Connect Your
-              </span>
-              <br />
-              <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 bg-clip-text text-transparent">
-                X Account
-              </span>
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.p variants={itemVariants} className="text-xl text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">
-              Let our AI learn your unique voice and writing style to generate authentic tweets that sound just like
-              you.
-            </motion.p>
-
-            {/* Continue with X Button */}
-            <motion.div variants={itemVariants} className="mb-12">
-              <motion.button
-                onClick={handleTwitterLogin}
-                disabled={isLoading}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-black hover:bg-gray-800 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg group disabled:opacity-50 min-w-[280px]"
-                whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)" }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {isLoading ? (
-                  <>
-                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Connecting...</span>
-                  </>
-                ) : (
-                  <>
-                    <Twitter className="w-6 h-6" />
-                    <span>Continue with X</span>
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </motion.button>
-            </motion.div>
-
-            {/* Security Note */}
+          <div className="px-4 sm:px-6 w-full">
             <motion.div
-              variants={itemVariants}
-              className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-12"
+              className="max-w-2xl mx-auto text-center"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              <Shield className="w-4 h-4 text-green-500" />
-              <span>Secure OAuth connection • We never store your password</span>
-            </motion.div>
+              {/* Badge */}
+              <motion.div variants={itemVariants} className="inline-block mb-6">
+                <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200/60 rounded-full shadow-sm">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-semibold text-gray-800">Get Started in Minutes</span>
+                </div>
+              </motion.div>
 
-            {/* Benefits */}
-            <motion.div variants={itemVariants} className="grid md:grid-cols-3 gap-6 mb-12">
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/60 hover:shadow-lg transition-all duration-300 hover:border-blue-200"
-                  whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1 + index * 0.1 }}
+              {/* Main Headline */}
+              <motion.h1 variants={itemVariants} className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6">
+                <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+                  Connect Your
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 bg-clip-text text-transparent">
+                  X Account
+                </span>
+              </motion.h1>
+
+              {/* Subtitle */}
+              <motion.p variants={itemVariants} className="text-base sm:text-xl text-gray-600 mb-10 max-w-xl mx-auto leading-relaxed">
+                Let our AI learn your unique voice and writing style to generate authentic tweets that sound just like
+                you.
+              </motion.p>
+
+              {/* Continue with X Button */}
+              <motion.div variants={itemVariants} className="mb-12">
+                <motion.button
+                  onClick={handleTwitterLogin}
+                  disabled={isLoading}
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-black hover:bg-gray-800 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-base sm:text-lg group disabled:opacity-50 min-w-full sm:min-w-[280px]"
+                  whileHover={{ scale: 1.02, boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)" }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mb-4 mx-auto shadow-sm">
-                    <benefit.icon className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
-                </motion.div>
-              ))}
-            </motion.div>
+                  {isLoading ? (
+                    <>
+                      <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Connecting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Twitter className="w-6 h-6" />
+                      <span>Continue with X</span>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </motion.button>
+              </motion.div>
 
-            {/* Process Steps */}
-            <motion.div
-              variants={itemVariants}
-              className="bg-gradient-to-r from-gray-50/50 to-blue-50/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/60"
-            >
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">What happens next?</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {steps.map((step, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {index + 1}
+              {/* Security Note */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-12"
+              >
+                <Shield className="w-4 h-4 text-green-500" />
+                <span>Secure OAuth connection • We never store your password</span>
+              </motion.div>
+
+              {/* Benefits */}
+              <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                {benefits.map((benefit, index) => (
+                  <motion.div
+                    key={index}
+                    className="p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/60 hover:shadow-lg transition-all duration-300 hover:border-blue-200"
+                    whileHover={{ y: -5, boxShadow: "0 10px 40px rgba(0,0,0,0.1)" }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1 + index * 0.1 }}
+                  >
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mb-4 mx-auto shadow-sm">
+                      <benefit.icon className="w-6 h-6 text-blue-600" />
                     </div>
-                    <span className="text-sm text-gray-700 font-medium">{step}</span>
-                  </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
+
+              {/* Process Steps */}
+              <motion.div
+                variants={itemVariants}
+                className="bg-gradient-to-r from-gray-50/50 to-blue-50/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/60"
+              >
+                <h3 className="text-xl font-semibold text-gray-900 mb-6">What happens next?</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {steps.map((step, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                        {index + 1}
+                      </div>
+                      <span className="text-sm text-gray-700 font-medium">{step}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Footer */}
         <motion.footer
-          className="px-6 py-8 border-t border-gray-200/50 bg-gradient-to-r from-gray-50/50 to-white backdrop-blur-sm"
+          className="px-4 sm:px-6 py-8 border-t border-gray-200/50 bg-gradient-to-r from-gray-50/50 to-white backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
         >
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
@@ -308,7 +306,7 @@ export default function OnboardingPage() {
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-200/50 text-center text-sm text-gray-500">
-              © 2024 Marketeer. All rights reserved. •{" "}
+              © 2025 Marketeer. All rights reserved. •{" "}
               <a href="#" className="hover:text-gray-700 transition-colors">
                 Privacy Policy
               </a>{" "}

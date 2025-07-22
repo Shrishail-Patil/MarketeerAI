@@ -35,6 +35,7 @@ import Footer from "./components/Footer";
 import GeneratedTweets from "./components/GeneratedTweets";
 import ScheduledTweets from "./components/ScheduledTweets";
 import PostedTweets from "./components/PostedTweets";
+import LogoBtn from "@/components/LogoBtn";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("generated");
@@ -365,19 +366,7 @@ export default function DashboardPage() {
           <div className="mx-auto">
             <div className="flex justify-between items-center">
               {/* Logo and Greeting */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <Sparkles className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                    Marketeer
-                  </span>
-                  <h1 className="text-sm text-gray-600">
-                    Welcome back, {profile.username || "User"}!
-                  </h1>
-                </div>
-              </div>
+              <LogoBtn />
 
               {/* Action Icons */}
               <div className="flex items-center gap-4">
@@ -512,7 +501,7 @@ export default function DashboardPage() {
             </AnimatePresence>
 
             {/* Tabs */}
-            <div className="flex mt-6 border-b border-gray-200/70">
+            <div className="flex mt-6 ">
               <button
                 className={`px-4 py-2 font-medium text-sm transition-colors relative ${
                   activeTab === "generated"
@@ -591,6 +580,7 @@ export default function DashboardPage() {
               >
                 <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full text-blue-600 text-sm">
                   <RefreshCw className="w-4 h-4 animate-spin" />
+
                   <span>
                     {isGenerating ? "Generating tweets..." : "Refreshing..."}
                   </span>
